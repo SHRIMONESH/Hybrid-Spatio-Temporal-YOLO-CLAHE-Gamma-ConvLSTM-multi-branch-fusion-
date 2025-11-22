@@ -31,7 +31,7 @@ It is particularly effective in scenarios with heavy glare, fluctuating illumina
 ---
 
 ## 🏗️ Architecture
-<img width="569" height="642" alt="image" src="https://github.com/user-attachments/assets/c74bc690-0e0d-4990-bf39-d15c73e5c029" />
+
 
 The model pipeline processes video sequences through the following stages:
 <img width="435" height="470" alt="image" src="https://github.com/user-attachments/assets/c17e597c-607b-473d-b803-229ed5e26047" />
