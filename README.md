@@ -1,47 +1,41 @@
-# Hybrid Spatio-Temporal YOLO (HST-YOLO)
-### CLAHE + Gamma + ConvLSTM Fusion for Advanced Nighttime Detection
+# Nighttime Vehicle Detection using YOLOv8 🚗🌑
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![PyTorch](https://img.shields.io/badge/PyTorch-1.12%2B-orange)
-![License](https://img.shields.io/badge/License-MIT-green)
+![YOLOv8](https://img.shields.io/badge/YOLO-v8-blue)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-orange)
+![Python](https://img.shields.io/badge/Python-3.10%2B-yellow)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-## 📖 Overview
+## 📌 Project Overview
 
-**Hybrid Spatio-Temporal YOLO** is an advanced object detection architecture specifically engineered for **extremely low-light environments**. Traditional detectors often fail when camera sensors capture underexposed, noisy, or low-contrast frames.
+**Nighttime Vehicle Detection** is a computer vision project aimed at enhancing road safety and surveillance systems by accurately detecting vehicles in low-light and nighttime conditions. Traditional object detectors often struggle with the glare of headlights, street lamps, and low contrast. This project overcomes those challenges by fine-tuning **Ultralytics YOLOv8 (Nano and Small)** models on a specialized dataset.
 
+The repository features a complete pipeline:
+1.  **Custom Data Parsing:** A specialized script to convert raw `ground_truth.txt` annotations into the standard YOLO format.
+2.  **Model Training:** Configurations for training `yolov8n` and `yolov8s` models.
+3.  **Performance Evaluation:** Automated generation of Confusion Matrices, PR Curves, and F1-Score plots.
 
+## 🏗️ Technical Architecture & Tech Stack
 
-This model solves these challenges by combining three distinct stages into a unified architecture:
-1.  **Image Enhancement:** A preprocessing pipeline using CLAHE and Gamma correction.
-2.  **Temporal Modeling:** Utilizing ConvLSTM to maintain object continuity across frames.
-3.  **Multi-Branch Feature Fusion:** capturing contextual information at various receptive fields.
+* **Core Framework:** [Ultralytics YOLOv8](https://docs.ultralytics.com/)
+* **Deep Learning Backend:** [PyTorch](https://pytorch.org/)
+* **Image Processing:** OpenCV (`cv2`), Pillow (`PIL`)
+* **Data Manipulation:** NumPy, Pandas
+* **Visualization:** Matplotlib, Seaborn
+* **Environment:** Google Colab (optimized for Tesla T4 GPU)
 
-It is particularly effective in scenarios with heavy glare, fluctuating illumination, dark shadows, and unpredictable car headlights.
+## 📂 Project Structure
 
----
+The project relies on a specific directory structure to handle the custom dataset and training results via Google Drive.
 
-## 🚀 Key Features
-
-* **Adaptive Preprocessing Pipeline:** * **CLAHE (Contrast Limited Adaptive Histogram Equalization):** Improves local contrast in dark regions without over-amplifying noise.
-    * **Gamma Correction:** Modifies global luminance to recover mid-tone visibility.
-* **Temporal Reasoning (ConvLSTM):** Unlike static detectors, this model uses sequence data to infer object boundaries even when frames are partially dark or blurred.
-* **Multi-Branch Fusion Block:** Fuses features from parallel convolutions (1×1, 3×3, 5×5, 7×7) via concatenation and residual connections to handle variable visibility.
-* **Robust Loss Function:** optimized using a combination of Detection Loss, Temporal Stability Loss, and Attention Regularization.
-
----
-
-## 🏗️ Architecture
-
-
-The model pipeline processes video sequences through the following stages:
-<img width="435" height="470" alt="image" src="https://github.com/user-attachments/assets/c17e597c-607b-473d-b803-229ed5e26047" />
-<img width="404" height="411" alt="image" src="https://github.com/user-attachments/assets/4dd5313a-783a-4eaf-91b3-cc5150b1c271" />
-
-```mermaid
-graph TD
-    Input[Input Video Sequence] --> Pre[Preprocessing Stage]
-    Pre -->|CLAHE + Gamma| Backbone[YOLO-like Backbone]
-    Backbone -->|Multi-scale Features| CLSTM[ConvLSTM Units]
-    CLSTM -->|Temporal Features| Fusion[Multi-Branch Fusion Block]
-    Fusion -->|1x1, 3x3, 5x5, 7x7 Convs| Head[Detection Head]
-    Head --> Output[Final Bounding Boxes]
+```text
+├── NITTAPP3.ipynb                  # Main execution notebook
+├── nighttime_vehicle_dataset/      # Dataset Source
+│   ├── images/                     # Raw nighttime images (img_xxxxx.jpg)
+│   └── ground_truth.txt            # Annotations (Filename Num_Vehicles X1 Y1 W H...)
+├── nighttime_vehicle_detection/    # Local working directory
+│   └── labels/                     # Generated YOLO formatted labels (.txt)
+├── nighttime_vehicle_results/      # Output Directory
+│   ├── yolov8n_nighttime/          # Nano model weights & logs
+│   ├── yolov8s_nighttime/          # Small model weights & logs
+│   └── runs/                       # Tensorboard events
+└── README.md
